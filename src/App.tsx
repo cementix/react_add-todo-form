@@ -7,7 +7,7 @@ import { TodoList } from './components/TodoList';
 
 export const App = () => {
   const [title, setTitle] = useState<string>('');
-  const [chosenUser, setChosenUser] = useState<string>('0');
+  const [chosenUser, setChosenUser] = useState<number>(0);
   const [errors, setErrors] = useState<{ title: boolean; user: boolean }>({
     title: false,
     user: false,
@@ -19,7 +19,7 @@ export const App = () => {
 
     const newErrors = {
       title: title.trim() === '',
-      user: chosenUser === '' || chosenUser === '0',
+      user: chosenUser === 0,
     };
 
     setErrors(newErrors);
@@ -36,13 +36,13 @@ export const App = () => {
       id: maxId + 1,
       title,
       completed: false,
-      userId: usersFromServer.find(user => user.name === chosenUser)!.id,
+      userId: chosenUser,
     };
 
     setTodos(prev => [...prev, newTodo]);
 
     setTitle('');
-    setChosenUser('0');
+    setChosenUser(0);
   };
 
   return (
@@ -73,15 +73,15 @@ export const App = () => {
             data-cy="userSelect"
             value={chosenUser}
             onChange={e => {
-              setChosenUser(e.target.value);
+              setChosenUser(+e.target.value);
               setErrors(prev => ({ ...prev, user: false }));
             }}
           >
-            <option value="0" disabled>
+            <option value={0} disabled>
               Choose a user
             </option>
             {usersFromServer.map(user => (
-              <option value={user.name} key={user.name}>
+              <option value={user.id} key={user.name}>
                 {user.name}
               </option>
             ))}
