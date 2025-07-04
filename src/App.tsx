@@ -94,6 +94,7 @@ export const App = () => {
           Add
         </button>
       </form>
+
       <TodoList todos={todos} />
     </div>
   );
